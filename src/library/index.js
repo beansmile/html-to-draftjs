@@ -71,6 +71,37 @@ function genFragment(
     return { chunk: getAtomicBlockChunk(entityId) };
   }
 
+  if (
+    nodeName === 'video' &&
+    node instanceof HTMLVideoElement
+  ) {
+    const entityConfig = {};
+    entityConfig.src = node.firstChild.src;
+    entityConfig.height = node.getAttribute('height');
+    entityConfig.width = node.getAttribute('width');
+    const entityId = Entity.create(
+      'VIDEO',
+      'MUTABLE',
+      entityConfig,
+    );
+    return { chunk: getAtomicBlockChunk(entityId) };
+  }
+
+  if (
+    nodeName === 'hr' &&
+    node instanceof HTMLHRElement
+  ) {
+    const entityConfig = {};
+    entityConfig.type = node.style.borderTop.split(' ')[1];
+    entityConfig.width = node.style.width;
+    const entityId = Entity.create(
+      'LINE',
+      'MUTABLE',
+      entityConfig,
+    );
+    return { chunk: getAtomicBlockChunk(entityId) };
+  }
+
   const blockType = getBlockTypeForTag(nodeName, lastList);
 
   let chunk;
